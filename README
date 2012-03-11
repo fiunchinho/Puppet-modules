@@ -9,18 +9,28 @@ Como lanzar puppet en una máquina virtual
 
 
 * Instalar Ubuntu 10.04 Lucid en nueva VM
+
 * Cambiar el idioma del teclado a español con : sudo apt-get -y install console-common && sudo dpkg-reconfigure console-data
+
 * Sincronizar horario con el puppetmaster, cambiando timezone mediante: "sudo dpkg-reconfigure tzdata"
+
 * Darle un hostname a la VM con "sudo hostname nombre_hostname". Este hostname es la configuración que pediremos al puppetmaster (está en el nodes.pp del puppetmaster)
+
 * Añadir al /etc/hosts de la máquina host una entrada con el hostname elegido en la VM, y que apunte a la IP VM
+
 * Añadir al /etc/hosts de la VM una entrada con nombre puppetmaster apuntando a la IP de la máquina host
+
 * Lanzar en la VM "sudo puppet agent --waitforcert 60 --server puppetmaster --test". Ojo con esto: es posible que de errores de certificados, sobretodo por tema de nombres (hostnames). Debemos asegurarnos de que estamos usando los nombres correctos; es posible que el master esté usando un hostname que no es puppetmaster y el certificado no vale. Mira http://stackoverflow.com/questions/8644288/ec2-ubuntu-11-10-puppet-hostname-name-mistmatch-error
-* Esto pedirá certificado al puppetmaster, por tanto debemos firmarlo allí. Podemos listar los certificados con "" y firmar el que queramos con ""
-* Una vez firmado, las actualizaciones se harán en el cliente.
+
+* Esto pedirá certificado al puppetmaster, por tanto debemos firmarlo allí. Podemos listar los certificados con "sudo puppet cert --list" y firmar el que queramos con "sudo puppet cert --sign nombre_hostname_del_agent"
+
+* Una vez firmado, las actualizaciones se harán automáticamente en el cliente. Podríamos crear una entrada en el crontab para que lanzase esto cada media hora y tener siempre la máquina en el mismo estado.
+
 * Cualquier problema de certificaciones, una opción es borrar la carpeta /var/lib/puppet/ssl con toda la info de certificaciones (tanto master como agent)
 
 
 Más info sobre posibles errores:
+
 * http://blog.adityapatawari.com/2012/02/puppet-and-common-errors.html
 * http://bitcube.co.uk/content/puppet-errors-explained
 * http://docs.puppetlabs.com/guides/troubleshooting.html
