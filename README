@@ -1,0 +1,3 @@
+Some modules that I've created while I was learning Puppet. These modules are not reliable.
+
+It also includes a script to easily generate a new module by creating the standard folders and files (empty).

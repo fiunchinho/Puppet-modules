@@ -1,0 +1,11 @@
+<VirtualHost *:8080>
+    ServerName <%= url %>
+    DocumentRoot /var/www/<%= name %>
+
+    <Directory /var/www/<%= name %> >
+        Options Indexes FollowSymLinks Includes
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+</VirtualHost>
